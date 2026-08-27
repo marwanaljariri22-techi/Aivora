@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aivora - المساعد الذكي</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0b1020, #151b35);
+    color: white;
+    min-height: 100vh;
+}
+
+header {
+    padding: 18px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #6c63ff;
+}
+
+.owner {
+    font-size: 13px;
+    opacity: .7;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 35px 18px;
+}
+
+.welcome {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.welcome h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.welcome h1 span {
+    color: #7c72ff;
+}
+
+.welcome p {
+    color: #b8bdd3;
+    font-size: 17px;
+}
+
+.chat {
+    margin-top: 35px;
+    min-height: 330px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 22px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.message {
+    background: rgba(108,99,255,.15);
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+input {
+    flex: 1;
+    padding: 17px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.15);
+    background: rgba(0,0,0,.25);
+    color: white;
+    outline: none;
+    font-size: 16px;
+}
+
+button {
+    border: none;
+    border-radius: 14px;
+    padding: 0 24px;
+    background: #6c63ff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: .85;
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.feature {
+    padding: 20px;
+    text-align: center;
+    background: rgba(255,255,255,.05);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.feature h3 {
+    margin: 8px 0;
+}
+
+.feature p {
+    color: #aeb3c7;
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #777d94;
+    font-size: 13px;
+}
+
+@media (max-width: 650px) {
+    .welcome h1 {
+        font-size: 32px;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .input-area {
+        flex-direction: column;
+    }
+
+    button {
+        padding: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">AI<span>vora</span></div>
+    <div class="owner">بواسطة Marwan Aljariri</div>
+</header>
+
+<div class="container">
+
+    <section class="welcome">
+        <h1>أهلاً بك في <span>Aivora</span></h1>
+        <p>مساعدك الذكي لمساعدتك في الإجابة والتفكير وإنجاز المهام.</p>
+    </section>
+
+    <section class="chat">
+
+        <div id="messages">
+            <div class="message">
+                🤖 مرحباً! أنا Aivora، كيف يمكنني مساعدتك اليوم؟
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input
+                id="userInput"
+                type="text"
+                placeholder="اكتب رسالتك هنا..."
+                onkeydown="if(event.key==='Enter') sendMessage()"
+            >
+
+            <button onclick="sendMessage()">إرسال</button>
+        </div>
+
+    </section>
+
+    <section class="features">
+
+        <div class="feature">
+            <div style="font-size:30px;">💡</div>
+            <h3>أفكار ذكية</h3>
+            <p>احصل على أفكار ومساعدة في مختلف المواضيع.</p>
+        </div>
+
+        <div class="feature">
+            <div style="font-size:30px;">⚡</div>
+            <h3>سريع</h3>
+            <p>واجهة بسيطة وسريعة وسهلة الاستخدام.</p>
+        </div>
+
+        <div class="feature">
+            <div style="font-size:30px;">🌍</div>
+            <h3>عالمي</h3>
+            <p>Aivora مصمم ليكون متاحاً للمستخدمين حول العالم.</p>
+        </div>
+
+    </section>
+
+</div>
+
+<footer>
+    © 2026 Aivora — جميع الحقوق محفوظة
+</footer>
+
+<script>
+
+function sendMessage() {
+
+    const input = document.getElementById("userInput");
+    const text = input.value.trim();
+
+    if (text === "") return;
+
+    const messages = document.getElementById("messages");
+
+    const userMessage = document.createElement("div");
+    userMessage.className = "message";
+    userMessage.innerHTML = "👤 " + escapeHTML(text);
+
+    messages.appendChild(userMessage);
+
+    input.value = "";
+
+    setTimeout(function() {
+
+        const aiMessage = document.createElement("div");
+        aiMessage.className = "message";
+
+        aiMessage.innerHTML =
+            "🤖 شكراً لرسالتك! واجهة Aivora تعمل الآن. " +
+            "يمكن ربطها لاحقاً بمحرك ذكاء اصطناعي حقيقي.";
+
+        messages.appendChild(aiMessage);
+
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth"
+        });
+
+    }, 500);
+}
+
+function escapeHTML(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+</script>
+
+</body>
+</html>

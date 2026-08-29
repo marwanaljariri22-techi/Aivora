@@ -3,218 +3,162 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aivora - ذكاء اصطناعي يفهمك</title>
+<title>Aivora AI</title>
 
 <style>
-*{
-  box-sizing:border-box;
+* {
+  box-sizing: border-box;
 }
 
-body{
-  margin:0;
-  font-family:Arial,"Tahoma",sans-serif;
-  background:#080616;
-  color:white;
-  min-height:100vh;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #101827, #18243a, #0d1524);
+  color: white;
+  min-height: 100vh;
 }
 
-body:before{
-  content:"";
-  position:fixed;
-  width:350px;
-  height:350px;
-  background:#673ab7;
-  filter:blur(130px);
-  opacity:.35;
-  top:-120px;
-  right:-100px;
-  z-index:-1;
+.app {
+  max-width: 900px;
+  margin: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-body:after{
-  content:"";
-  position:fixed;
-  width:300px;
-  height:300px;
-  background:#00bcd4;
-  filter:blur(130px);
-  opacity:.2;
-  bottom:-120px;
-  left:-100px;
-  z-index:-1;
+header {
+  padding: 25px 20px;
+  text-align: center;
+  border-bottom: 1px solid #ffffff18;
 }
 
-.header{
-  padding:22px 18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid rgba(255,255,255,.08);
+.logo {
+  font-size: 34px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #67e8f9, #a78bfa);
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-.logo{
-  font-size:28px;
-  font-weight:bold;
+.subtitle {
+  color: #aeb8cc;
+  margin-top: 7px;
 }
 
-.logo span{
-  color:#9c7cff;
+.settings {
+  padding: 15px 20px;
 }
 
-.status{
-  font-size:12px;
-  color:#6fffb0;
+.api-box {
+  display: flex;
+  gap: 8px;
 }
 
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:30px 15px 120px;
+input {
+  flex: 1;
+  padding: 14px;
+  border: 1px solid #ffffff20;
+  border-radius: 12px;
+  background: #ffffff0d;
+  color: white;
+  outline: none;
 }
 
-.hero{
-  text-align:center;
-  padding:30px 10px;
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-.hero h1{
-  font-size:38px;
-  margin:10px 0;
+.save {
+  background: #7c3aed;
+  color: white;
 }
 
-.hero h1 span{
-  color:#a98bff;
+.chat {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
 }
 
-.hero p{
-  color:#bbb5cc;
-  font-size:16px;
+.welcome {
+  text-align: center;
+  margin: 80px 10px;
+  color: #b8c2d6;
 }
 
-.api-box{
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:18px;
-  padding:15px;
-  margin:15px 0;
+.welcome h2 {
+  color: white;
+  font-size: 28px;
 }
 
-.api-title{
-  font-weight:bold;
-  margin-bottom:10px;
+.message {
+  max-width: 85%;
+  padding: 15px 18px;
+  margin: 12px 0;
+  border-radius: 18px;
+  line-height: 1.7;
+  white-space: pre-wrap;
 }
 
-.api-row{
-  display:flex;
-  gap:8px;
+.user {
+  background: #4f46e5;
+  margin-right: auto;
 }
 
-input{
-  flex:1;
-  background:#120e24;
-  color:white;
-  border:1px solid #3b3157;
-  border-radius:12px;
-  padding:13px;
-  outline:none;
+.ai {
+  background: #ffffff12;
+  border: 1px solid #ffffff12;
+  margin-left: auto;
 }
 
-button{
-  border:0;
-  border-radius:12px;
-  padding:12px 18px;
-  cursor:pointer;
-  font-weight:bold;
+.error {
+  background: #7f1d1d;
 }
 
-.save{
-  background:#8d6cff;
-  color:white;
+.composer {
+  padding: 15px 20px 25px;
+  display: flex;
+  gap: 10px;
+  border-top: 1px solid #ffffff15;
+  background: #0c1422cc;
 }
 
-.chat{
-  margin-top:20px;
-  background:rgba(255,255,255,.045);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:22px;
-  overflow:hidden;
+#messageInput {
+  font-size: 16px;
 }
 
-.messages{
-  min-height:330px;
-  max-height:500px;
-  overflow-y:auto;
-  padding:18px;
+.send {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  color: white;
+  min-width: 90px;
 }
 
-.message{
-  margin:10px 0;
-  padding:13px 15px;
-  border-radius:16px;
-  line-height:1.7;
-  white-space:pre-wrap;
+.send:disabled {
+  opacity: .5;
+  cursor: not-allowed;
 }
 
-.user{
-  background:#7255dc;
-  margin-right:20%;
+.status {
+  text-align: center;
+  font-size: 13px;
+  color: #94a3b8;
+  padding: 5px;
 }
 
-.ai{
-  background:#171229;
-  border:1px solid rgba(255,255,255,.08);
-  margin-left:10%;
-}
-
-.welcome{
-  text-align:center;
-  color:#aaa3ba;
-  padding:60px 10px;
-}
-
-.input-area{
-  display:flex;
-  gap:8px;
-  padding:12px;
-  border-top:1px solid rgba(255,255,255,.08);
-}
-
-#prompt{
-  width:100%;
-}
-
-.send{
-  background:#9b7bff;
-  color:white;
-  min-width:90px;
-}
-
-.send:disabled{
-  opacity:.5;
-}
-
-.footer{
-  text-align:center;
-  color:#777084;
-  font-size:12px;
-  margin-top:25px;
-}
-
-@media(max-width:600px){
-  .hero h1{
-    font-size:30px;
+@media(max-width:600px) {
+  .api-box {
+    flex-direction: column;
   }
 
-  .api-row{
-    flex-direction:column;
+  .message {
+    max-width: 95%;
   }
 
-  .user{
-    margin-right:5%;
-  }
-
-  .ai{
-    margin-left:5%;
+  .composer {
+    padding: 10px;
   }
 }
 </style>
@@ -222,278 +166,201 @@ button{
 
 <body>
 
-<header class="header">
-  <div class="logo">Ai<span>vora</span></div>
-  <div class="status">● Gemini AI</div>
+<div class="app">
+
+<header>
+  <div class="logo">✦ Aivora</div>
+  <div class="subtitle">مساعدك الذكي</div>
 </header>
 
-<main class="container">
-
-<section class="hero">
-  <h1>مرحبًا بك في <span>Aivora</span></h1>
-  <p>ذكاء اصطناعي يفهمك ويساعدك</p>
-</section>
-
-<section class="api-box">
-  <div class="api-title">🔑 مفتاح Gemini API</div>
-
-  <div class="api-row">
+<div class="settings">
+  <div class="api-box">
     <input
       id="apiKey"
       type="password"
-      placeholder="ضع مفتاح Gemini هنا"
+      placeholder="ضع مفتاح Gemini API هنا"
+      autocomplete="off"
     >
-
-    <button class="save" onclick="saveKey()">
-      حفظ
-    </button>
+    <button class="save" onclick="saveKey()">حفظ المفتاح</button>
   </div>
-
-  <div id="keyStatus" style="margin-top:8px;color:#aaa;font-size:12px;"></div>
-</section>
-
-<section class="chat">
-
-  <div id="messages" class="messages">
-
-    <div class="welcome" id="welcome">
-      <div style="font-size:45px;">✨</div>
-      <h2>كيف يمكنني مساعدتك؟</h2>
-      <p>اكتب سؤالك في الأسفل وابدأ المحادثة مع Aivora</p>
-    </div>
-
+  <div id="status" class="status">
+    أدخل مفتاح Gemini للبدء
   </div>
-
-  <div class="input-area">
-
-    <input
-      id="prompt"
-      type="text"
-      placeholder="اكتب رسالتك هنا..."
-      onkeydown="handleKey(event)"
-    >
-
-    <button
-      id="sendBtn"
-      class="send"
-      onclick="sendMessage()"
-    >
-      إرسال
-    </button>
-
-  </div>
-
-</section>
-
-<div class="footer">
-  Aivora © 2026
 </div>
 
-</main>
+<div id="chat" class="chat">
+  <div class="welcome" id="welcome">
+    <h2>أهلًا بك في Aivora 👋</h2>
+    <p>اكتب سؤالك وسأحاول مساعدتك.</p>
+  </div>
+</div>
+
+<div class="composer">
+  <input
+    id="messageInput"
+    type="text"
+    placeholder="اكتب رسالتك هنا..."
+    onkeydown="handleKey(event)"
+  >
+  <button id="sendButton" class="send" onclick="sendMessage()">
+    إرسال
+  </button>
+</div>
+
+</div>
 
 <script>
-
-const API_URL =
-"https://generativelanguage.googleapis.com/v1beta/interactions";
+const MODEL = "gemini-2.5-flash";
 
 let apiKey = localStorage.getItem("aivora_gemini_key") || "";
 
 const apiInput = document.getElementById("apiKey");
-const keyStatus = document.getElementById("keyStatus");
+const messageInput = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
+const chat = document.getElementById("chat");
+const statusBox = document.getElementById("status");
 
-if(apiKey){
+if (apiKey) {
   apiInput.value = apiKey;
-  keyStatus.textContent = "✓ تم العثور على مفتاح محفوظ على هذا الجهاز";
+  statusBox.textContent = "المفتاح محفوظ على هذا الجهاز";
 }
 
-function saveKey(){
-
+function saveKey() {
   const key = apiInput.value.trim();
 
-  if(!key){
-    keyStatus.textContent = "أدخل مفتاح Gemini أولاً";
+  if (!key) {
+    statusBox.textContent = "⚠️ أدخل مفتاح Gemini أولًا";
     return;
   }
 
-  localStorage.setItem("aivora_gemini_key",key);
+  localStorage.setItem("aivora_gemini_key", key);
   apiKey = key;
 
-  keyStatus.textContent =
-    "✓ تم حفظ المفتاح على هذا الجهاز";
-
+  statusBox.textContent = "✅ تم حفظ المفتاح على هذا الجهاز";
 }
 
-function handleKey(event){
-
-  if(event.key === "Enter"){
+function handleKey(event) {
+  if (event.key === "Enter") {
     sendMessage();
   }
-
 }
 
-function addMessage(text,type){
+function addMessage(text, type) {
+  const welcome = document.getElementById("welcome");
 
-  const welcome =
-    document.getElementById("welcome");
-
-  if(welcome){
+  if (welcome) {
     welcome.remove();
   }
 
-  const messages =
-    document.getElementById("messages");
-
-  const div =
-    document.createElement("div");
-
-  div.className =
-    "message " + type;
-
+  const div = document.createElement("div");
+  div.className = "message " + type;
   div.textContent = text;
 
-  messages.appendChild(div);
-
-  messages.scrollTop =
-    messages.scrollHeight;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
 
   return div;
-
 }
 
-async function sendMessage(){
+async function sendMessage() {
 
-  const input =
-    document.getElementById("prompt");
+  if (!apiKey) {
+    apiKey = apiInput.value.trim();
+  }
 
-  const button =
-    document.getElementById("sendBtn");
-
-  const text =
-    input.value.trim();
-
-  if(!text){
+  if (!apiKey) {
+    statusBox.textContent = "⚠️ ضع مفتاح Gemini ثم اضغط حفظ المفتاح";
+    apiInput.focus();
     return;
   }
 
-  if(!apiKey){
+  const text = messageInput.value.trim();
 
-    addMessage(
-      "أدخل مفتاح Gemini API أولاً ثم اضغط حفظ.",
-      "ai"
-    );
+  if (!text) return;
 
-    return;
-  }
+  addMessage(text, "user");
 
-  addMessage(text,"user");
+  messageInput.value = "";
+  sendButton.disabled = true;
+  statusBox.textContent = "Aivora يفكر...";
 
-  input.value = "";
+  const thinking = addMessage("Aivora يفكر...", "ai");
 
-  button.disabled = true;
-  button.textContent = "جاري...";
+  try {
 
-  const loading =
-    addMessage("Aivora يفكر...","ai");
+    const url =
+      "https://generativelanguage.googleapis.com/v1beta/models/"
+      + MODEL
+      + ":generateContent?key="
+      + encodeURIComponent(apiKey);
 
-  try{
-
-    const response =
-      await fetch(API_URL,{
-        method:"POST",
-
-        headers:{
-          "Content-Type":"application/json",
-          "x-goog-api-key":apiKey
-        },
-
-        body:JSON.stringify({
-
-          model:"gemini-3.7-flash",
-
-          input:text
-
-        })
-
-      });
-
-    const data =
-      await response.json();
-
-    loading.remove();
-
-    if(!response.ok){
-
-      let errorMessage =
-        "حدث خطأ أثناء الاتصال بـ Gemini.";
-
-      if(data.error && data.error.message){
-        errorMessage =
-          data.error.message;
-      }
-
-      addMessage(
-        "❌ " + errorMessage,
-        "ai"
-      );
-
-      return;
-    }
-
-    let answer = "";
-
-    if(data.output_text){
-      answer = data.output_text;
-    }
-    else if(data.steps){
-
-      for(const step of data.steps){
-
-        if(
-          step.type === "model_output" &&
-          step.content
-        ){
-
-          for(const item of step.content){
-
-            if(item.type === "text"){
-              answer += item.text;
-            }
-
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: "user",
+            parts: [
+              {
+                text: text
+              }
+            ]
           }
+        ]
+      })
+    });
 
-        }
+    const data = await response.json();
 
-      }
-
+    if (!response.ok) {
+      throw new Error(
+        data?.error?.message ||
+        "حدث خطأ في الاتصال بـ Gemini"
+      );
     }
 
-    if(!answer){
-      answer =
-        "لم أستطع الحصول على رد من Gemini.";
+    const answer =
+      data?.candidates?.[0]?.content?.parts
+        ?.map(part => part.text || "")
+        .join("")
+        .trim();
+
+    if (!answer) {
+      throw new Error("لم تصل إجابة من Gemini");
     }
 
-    addMessage(answer,"ai");
+    thinking.textContent = answer;
+    statusBox.textContent = "✅ تم الرد";
+
+  } catch (error) {
+
+    thinking.className = "message error";
+
+    let message = error.message || "حدث خطأ غير معروف";
+
+    if (
+      message.toLowerCase().includes("api key") ||
+      message.toLowerCase().includes("permission")
+    ) {
+      message =
+        "مشكلة في مفتاح Gemini. تأكد من أن المفتاح صحيح ومفعّل.";
+    }
+
+    thinking.textContent = "❌ " + message;
+    statusBox.textContent = "حدث خطأ";
+
+    console.error("Aivora Error:", error);
+
+  } finally {
+
+    sendButton.disabled = false;
+    messageInput.focus();
 
   }
-  catch(error){
-
-    loading.remove();
-
-    addMessage(
-      "❌ تعذر الاتصال بالذكاء الاصطناعي. تأكد من الإنترنت ومفتاح API.",
-      "ai"
-    );
-
-  }
-  finally{
-
-    button.disabled = false;
-    button.textContent = "إرسال";
-
-  }
-
 }
-
 </script>
 
 </body>

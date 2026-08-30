@@ -6,182 +6,111 @@
 <title>Aivora AI</title>
 
 <style>
-*{box-sizing:border-box}
-
 body{
     margin:0;
-    font-family:Arial,sans-serif;
-    background:linear-gradient(135deg,#101827,#18243a);
+    font-family:Arial;
+    background:#101827;
     color:white;
-    min-height:100vh;
 }
-
-.container{
+.box{
     max-width:700px;
     margin:auto;
-    padding:25px 15px;
-}
-
-h1{
-    text-align:center;
-    font-size:42px;
-    margin:20px 0 5px;
-}
-
-.subtitle{
-    text-align:center;
-    color:#b8c4d6;
-    margin-bottom:30px;
-}
-
-.chat{
-    background:#111b2d;
-    border-radius:20px;
     padding:20px;
-    min-height:400px;
-    box-shadow:0 10px 35px rgba(0,0,0,.3);
 }
-
-.message{
-    padding:14px;
+h1{text-align:center;font-size:40px}
+#chat{
+    background:#18243a;
+    min-height:400px;
+    padding:15px;
     border-radius:15px;
+}
+.msg{
+    padding:12px;
     margin:10px 0;
-    line-height:1.7;
+    border-radius:10px;
     white-space:pre-wrap;
 }
-
-.ai{
-    background:#1d2a40;
-}
-
-.user{
-    background:#304b73;
-}
-
-.input-area{
+.user{background:#31598c}
+.ai{background:#26364f}
+.row{
     display:flex;
-    gap:10px;
+    gap:8px;
     margin-top:15px;
 }
-
 input{
     flex:1;
     padding:15px;
+    border-radius:10px;
     border:0;
-    border-radius:12px;
-    outline:none;
-    font-size:16px;
 }
-
 button{
+    padding:15px 20px;
     border:0;
-    border-radius:12px;
-    padding:0 22px;
+    border-radius:10px;
     background:#4f8cff;
     color:white;
-    font-size:16px;
-    cursor:pointer;
-}
-
-button:disabled{
-    opacity:.5;
-}
-
-.status{
-    text-align:center;
-    color:#9eabc0;
-    margin-top:12px;
-    font-size:14px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="box">
 
 <h1>✨ Aivora</h1>
-<div class="subtitle">مساعدك الذكي بالذكاء الاصطناعي</div>
 
-<div class="chat" id="chat">
-    <div class="message ai">
-        أهلاً بك في Aivora 👋
-        كيف يمكنني مساعدتك؟
-    </div>
+<div id="chat">
+<div class="msg ai">أهلاً بك في Aivora 👋<br>أنا جاهز لمساعدتك.</div>
 </div>
 
-<div class="input-area">
-    <input id="messageInput"
-           type="text"
-           placeholder="اكتب سؤالك هنا..."
-           onkeydown="if(event.key==='Enter') sendMessage()">
-
-    <button id="sendButton" onclick="sendMessage()">
-        إرسال
-    </button>
+<div class="row">
+<input id="input" placeholder="اكتب رسالتك...">
+<button onclick="send()">إرسال</button>
 </div>
-
-<div class="status" id="status"></div>
 
 </div>
 
 <script>
 
-/* ضع مفتاح Gemini هنا للاختبار فقط */
-const GEMINI_API_KEY = "ضع_مفتاح_GEMINI_هنا";
+/* 🔴 ضع مفتاح Gemini هنا 🔴 */
+const GEMINI_API_KEY = "ضع_مفتاحك_هنا";
 
-async function sendMessage(){
 
-    const input = document.getElementById("messageInput");
-    const button = document.getElementById("sendButton");
-    const status = document.getElementById("status");
+async function send(){
+
+    const input = document.getElementById("input");
     const chat = document.getElementById("chat");
 
     const text = input.value.trim();
 
     if(!text) return;
 
-    // رسالة المستخدم
-    const userMessage = document.createElement("div");
-    userMessage.className = "message user";
-    userMessage.textContent = text;
-    chat.appendChild(userMessage);
+    chat.innerHTML +=
+    '<div class="msg user">' + text + '</div>';
 
     input.value = "";
-    button.disabled = true;
-    status.textContent = "Aivora يفكر...";
 
-    // رسالة الذكاء الاصطناعي
-    const aiMessage = document.createElement("div");
-    aiMessage.className = "message ai";
-    aiMessage.textContent = "جاري التفكير...";
-    chat.appendChild(aiMessage);
+    const ai = document.createElement("div");
+    ai.className = "msg ai";
+    ai.textContent = "Aivora يفكر...";
+    chat.appendChild(ai);
 
     try{
 
-        if(GEMINI_API_KEY === "ضع_مفتاح_GEMINI_هنا"){
-            throw new Error("لم يتم وضع مفتاح Gemini API");
-        }
-
-        const url =
+        const response = await fetch(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
-        + GEMINI_API_KEY;
-
-        const response = await fetch(url,{
+        + GEMINI_API_KEY,
+        {
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
             },
             body:JSON.stringify({
-                contents:[
-                    {
-                        parts:[
-                            {
-                                text:text
-                            }
-                        ]
-                    }
-                ]
+                contents:[{
+                    parts:[{
+                        text:text
+                    }]
+                }]
             })
         });
 
@@ -189,32 +118,21 @@ async function sendMessage(){
 
         if(!response.ok){
             throw new Error(
-                data.error?.message || "حدث خطأ في الاتصال"
+                data.error?.message || "خطأ في الاتصال"
             );
         }
 
-        const answer =
-        data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-        if(!answer){
-            throw new Error("لم تصل إجابة من Gemini");
-        }
-
-        aiMessage.textContent = answer;
+        ai.textContent =
+        data.candidates[0].content.parts[0].text;
 
     }catch(error){
 
-        aiMessage.textContent =
-        "حدث خطأ: " + error.message;
+        ai.textContent =
+        "❌ حدث خطأ: " + error.message;
 
-    }finally{
-
-        button.disabled = false;
-        status.textContent = "";
-        input.focus();
-
-        chat.scrollTop = chat.scrollHeight;
     }
+
+    chat.scrollTop = chat.scrollHeight;
 }
 
 </script>

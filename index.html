@@ -9,305 +9,213 @@
 *{box-sizing:border-box}
 
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:linear-gradient(135deg,#0b1220,#172554,#0f172a);
-color:white;
-min-height:100vh;
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#101827,#18243a);
+    color:white;
+    min-height:100vh;
 }
 
-.app{
-max-width:900px;
-margin:auto;
-min-height:100vh;
-display:flex;
-flex-direction:column;
-padding:18px;
-}
-
-header{
-text-align:center;
-padding:28px 10px 18px;
-}
-
-.logo{
-width:70px;
-height:70px;
-margin:auto;
-border-radius:22px;
-background:linear-gradient(135deg,#7c3aed,#06b6d4);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:34px;
-font-weight:bold;
+.container{
+    max-width:700px;
+    margin:auto;
+    padding:25px 15px;
 }
 
 h1{
-margin:14px 0 6px;
-font-size:34px;
+    text-align:center;
+    font-size:42px;
+    margin:20px 0 5px;
 }
 
 .subtitle{
-color:#b8c4d8;
+    text-align:center;
+    color:#b8c4d6;
+    margin-bottom:30px;
 }
 
 .chat{
-flex:1;
-background:#ffffff0b;
-border:1px solid #ffffff18;
-border-radius:22px;
-padding:18px;
-min-height:420px;
-overflow:auto;
+    background:#111b2d;
+    border-radius:20px;
+    padding:20px;
+    min-height:400px;
+    box-shadow:0 10px 35px rgba(0,0,0,.3);
 }
 
-.msg{
-max-width:82%;
-padding:13px 16px;
-border-radius:18px;
-margin:10px 0;
-line-height:1.7;
-white-space:pre-wrap;
+.message{
+    padding:14px;
+    border-radius:15px;
+    margin:10px 0;
+    line-height:1.7;
+    white-space:pre-wrap;
 }
 
 .ai{
-background:#1e293b;
-margin-left:auto;
-border-bottom-right-radius:5px;
+    background:#1d2a40;
 }
 
 .user{
-background:#2563eb;
-margin-right:auto;
-border-bottom-left-radius:5px;
+    background:#304b73;
 }
 
-.welcome{
-text-align:center;
-color:#b8c4d8;
-padding:100px 20px;
+.input-area{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
 }
 
-.composer{
-display:flex;
-gap:10px;
-margin-top:14px;
-}
-
-textarea{
-flex:1;
-resize:none;
-height:58px;
-border:1px solid #ffffff20;
-border-radius:17px;
-background:#0f172acc;
-color:white;
-padding:16px;
-font-size:16px;
-outline:none;
+input{
+    flex:1;
+    padding:15px;
+    border:0;
+    border-radius:12px;
+    outline:none;
+    font-size:16px;
 }
 
 button{
-border:0;
-border-radius:17px;
-padding:0 24px;
-background:linear-gradient(135deg,#7c3aed,#06b6d4);
-color:white;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
+    border:0;
+    border-radius:12px;
+    padding:0 22px;
+    background:#4f8cff;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
 }
 
 button:disabled{
-opacity:.5;
+    opacity:.5;
 }
 
-.actions{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:9px;
-color:#91a0b8;
-font-size:12px;
-}
-
-.clear{
-background:transparent;
-color:#aebbd0;
-padding:6px 10px;
-font-size:12px;
-}
-
-@media(max-width:600px){
-.app{padding:10px}
-.msg{max-width:90%}
-h1{font-size:28px}
-button{padding:0 16px}
+.status{
+    text-align:center;
+    color:#9eabc0;
+    margin-top:12px;
+    font-size:14px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<div class="container">
 
-<header>
-<div class="logo">AI</div>
-<h1>Aivora</h1>
-<p class="subtitle">مساعدك الذكي</p>
-</header>
+<h1>✨ Aivora</h1>
+<div class="subtitle">مساعدك الذكي بالذكاء الاصطناعي</div>
 
-<section class="chat" id="chat">
-
-<div class="welcome" id="welcome">
-<h2>مرحبًا بك في Aivora 👋</h2>
-<p>اكتب رسالتك بالأسفل لبدء المحادثة.</p>
+<div class="chat" id="chat">
+    <div class="message ai">
+        أهلاً بك في Aivora 👋
+        كيف يمكنني مساعدتك؟
+    </div>
 </div>
 
-</section>
+<div class="input-area">
+    <input id="messageInput"
+           type="text"
+           placeholder="اكتب سؤالك هنا..."
+           onkeydown="if(event.key==='Enter') sendMessage()">
 
-<div class="composer">
-
-<textarea
-id="input"
-placeholder="اكتب رسالتك هنا..."
-></textarea>
-
-<button id="send">إرسال</button>
-
+    <button id="sendButton" onclick="sendMessage()">
+        إرسال
+    </button>
 </div>
 
-<div class="actions">
-
-<span>اضغط Enter للإرسال</span>
-
-<button class="clear" id="clear">
-مسح المحادثة
-</button>
-
-</div>
+<div class="status" id="status"></div>
 
 </div>
 
 <script>
 
-const input=document.getElementById("input");
-const send=document.getElementById("send");
-const chat=document.getElementById("chat");
-const clear=document.getElementById("clear");
-
-function addMessage(text,type){
-
-const welcome=document.getElementById("welcome");
-
-if(welcome){
-welcome.remove();
-}
-
-const div=document.createElement("div");
-
-div.className="msg "+type;
-
-div.textContent=text;
-
-chat.appendChild(div);
-
-chat.scrollTop=chat.scrollHeight;
-
-}
-
-function localReply(text){
-
-const t=text.toLowerCase();
-
-if(t.includes("مرحبا") || t.includes("السلام")){
-
-return "مرحبًا بك! أنا Aivora 🤖 كيف يمكنني مساعدتك؟";
-
-}
-
-if(t.includes("اسمك")){
-
-return "اسمي Aivora، مساعدك الذكي.";
-
-}
-
-if(t.includes("كيف حالك")){
-
-return "أنا بخير وجاهز لمساعدتك 😊";
-
-}
-
-return "وصلت رسالتك: «"+text+"»\n\nواجهة Aivora تعمل بنجاح. في الخطوة التالية يمكننا ربطها بـ Gemini AI بطريقة آمنة.";
-
-}
+/* ضع مفتاح Gemini هنا للاختبار فقط */
+const GEMINI_API_KEY = "ضع_مفتاح_GEMINI_هنا";
 
 async function sendMessage(){
 
-const text=input.value.trim();
+    const input = document.getElementById("messageInput");
+    const button = document.getElementById("sendButton");
+    const status = document.getElementById("status");
+    const chat = document.getElementById("chat");
 
-if(!text || send.disabled){
-return;
+    const text = input.value.trim();
+
+    if(!text) return;
+
+    // رسالة المستخدم
+    const userMessage = document.createElement("div");
+    userMessage.className = "message user";
+    userMessage.textContent = text;
+    chat.appendChild(userMessage);
+
+    input.value = "";
+    button.disabled = true;
+    status.textContent = "Aivora يفكر...";
+
+    // رسالة الذكاء الاصطناعي
+    const aiMessage = document.createElement("div");
+    aiMessage.className = "message ai";
+    aiMessage.textContent = "جاري التفكير...";
+    chat.appendChild(aiMessage);
+
+    try{
+
+        if(GEMINI_API_KEY === "ضع_مفتاح_GEMINI_هنا"){
+            throw new Error("لم يتم وضع مفتاح Gemini API");
+        }
+
+        const url =
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
+        + GEMINI_API_KEY;
+
+        const response = await fetch(url,{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                contents:[
+                    {
+                        parts:[
+                            {
+                                text:text
+                            }
+                        ]
+                    }
+                ]
+            })
+        });
+
+        const data = await response.json();
+
+        if(!response.ok){
+            throw new Error(
+                data.error?.message || "حدث خطأ في الاتصال"
+            );
+        }
+
+        const answer =
+        data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if(!answer){
+            throw new Error("لم تصل إجابة من Gemini");
+        }
+
+        aiMessage.textContent = answer;
+
+    }catch(error){
+
+        aiMessage.textContent =
+        "حدث خطأ: " + error.message;
+
+    }finally{
+
+        button.disabled = false;
+        status.textContent = "";
+        input.focus();
+
+        chat.scrollTop = chat.scrollHeight;
+    }
 }
-
-addMessage(text,"user");
-
-input.value="";
-
-send.disabled=true;
-
-const thinking=document.createElement("div");
-
-thinking.className="msg ai";
-
-thinking.textContent="Aivora يفكر…";
-
-chat.appendChild(thinking);
-
-chat.scrollTop=chat.scrollHeight;
-
-await new Promise(resolve=>setTimeout(resolve,700));
-
-thinking.remove();
-
-addMessage(localReply(text),"ai");
-
-send.disabled=false;
-
-input.focus();
-
-}
-
-send.addEventListener("click",sendMessage);
-
-input.addEventListener("keydown",function(e){
-
-if(e.key==="Enter" && !e.shiftKey){
-
-e.preventDefault();
-
-sendMessage();
-
-}
-
-});
-
-clear.addEventListener("click",function(){
-
-chat.innerHTML=`
-
-<div class="welcome" id="welcome">
-
-<h2>مرحبًا بك في Aivora 👋</h2>
-
-<p>اكتب رسالتك بالأسفل لبدء المحادثة.</p>
-
-</div>
-
-`;
-
-});
 
 </script>
 

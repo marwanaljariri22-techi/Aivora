@@ -1,47 +1,197 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aivora AI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aivora AI</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #101827, #18243a, #0d1422);
-      color: white;
-      min-height: 100vh;
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #101827, #18243a, #0d1422);
+  color: white;
+  min-height: 100vh;
+}
 
-    .app {
-      width: 100%;
-      max-width: 900px;
-      min-height: 100vh;
-      margin: auto;
-      padding: 25px 20px;
-      display: flex;
-      flex-direction: column;
-    }
+.app {
+  width: 100%;
+  max-width: 900px;
+  min-height: 100vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
 
-    .header {
-      text-align: center;
-      padding: 20px;
-      border-bottom: 1px solid #ffffff18;
-    }
+header {
+  padding: 25px 20px;
+  text-align: center;
+  border-bottom: 1px solid #ffffff20;
+}
 
-    .logo {
-      font-size: 38px;
-      font-weight: bold;
-      background: linear-gradient(90deg, #67e8f9, #8b5cf6);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
+.logo {
+  font-size: 34px;
+  font-weight: bold;
+}
 
-    .subtitle {
-      color: #b8c1d
+.logo span {
+  color: #6ea8ff;
+}
+
+.subtitle {
+  color: #aab6c8;
+  margin-top: 8px;
+}
+
+.chat {
+  flex: 1;
+  padding: 25px 15px;
+  overflow-y: auto;
+}
+
+.message {
+  max-width: 80%;
+  padding: 14px 18px;
+  margin: 12px 0;
+  border-radius: 18px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.ai {
+  background: #1d2a40;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.user {
+  background: #3867d6;
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.bottom {
+  padding: 15px;
+  background: #101827;
+  border-top: 1px solid #ffffff15;
+}
+
+.input-box {
+  display: flex;
+  gap: 10px;
+}
+
+textarea {
+  flex: 1;
+  resize: none;
+  min-height: 55px;
+  max-height: 150px;
+  padding: 15px;
+  border: 1px solid #ffffff20;
+  border-radius: 15px;
+  background: #18243a;
+  color: white;
+  outline: none;
+  font-size: 16px;
+}
+
+button {
+  width: 90px;
+  border: none;
+  border-radius: 15px;
+  background: #3867d6;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #4b7bec;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+.status {
+  text-align: center;
+  color: #9ba8ba;
+  font-size: 13px;
+  margin-top: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+  <div class="logo">Aivora <span>AI</span></div>
+  <div class="subtitle">مساعدك الذكي</div>
+</header>
+
+<div class="chat" id="chat">
+  <div class="message ai">
+    أهلاً بك في Aivora AI 👋
+    <br>
+    كيف يمكنني مساعدتك اليوم؟
+  </div>
+</div>
+
+<div class="bottom">
+
+  <div class="input-box">
+    <textarea id="message"
+      placeholder="اكتب رسالتك هنا..."
+      onkeydown="handleKey(event)"></textarea>
+
+    <button id="sendBtn" onclick="sendMessage()">
+      إرسال
+    </button>
+  </div>
+
+  <div class="status" id="status">
+    Aivora AI جاهز
+  </div>
+
+</div>
+
+</div>
+
+<script>
+
+/* =========================================
+   ضع مفتاح Gemini هنا
+   ========================================= */
+
+const API_KEY = "ضع_مفتاح_GEMINI_هنا";
+
+
+/* =========================================
+   إرسال الرسالة إلى Gemini
+   ========================================= */
+
+async function sendMessage() {
+
+  const input = document.getElementById("message");
+  const chat = document.getElementById("chat");
+  const button = document.getElementById("sendBtn");
+  const status = document.getElementById("status");
+
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  if (API_KEY === "ضع_مفتاح_GEMINI_هنا") {
+    alert("ضع مفتاح Gemini API داخل الكود أولاً.");
+    return;
+  }
+
+  addMessage(text, "user");
+
+  input.value = "";
